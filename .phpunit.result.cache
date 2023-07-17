@@ -1,1 +1,0 @@
-{"version":1,"defects":{"Tests\\Aliyun\\AliyunClient::testGetVersion":4,"Tests\\Aliyun\\AliyunClient::testErrorRout":4},"times":{"Tests\\Aliyun\\AliyunClient::testGetVersion":0.004,"Tests\\Aliyun\\AliyunClient::testErrorRout":0.004}}

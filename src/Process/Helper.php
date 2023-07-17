@@ -13,6 +13,8 @@ namespace Bojian\PictureProcess\Process;
 class Helper
 {
     private static $logger;
+    static $loaded = false;
+    const ENV_PREFIX = 'PHP_';
 
     /**
      * 日志记录函数.
@@ -30,6 +32,37 @@ class Helper
     }
 
     /**
+     * 加载配置文件
+     * @access public
+     * @param string $filePath 配置文件路径
+     * @return void
+     * @throws \Exception
+     */
+    public static function loadFile(string $filePath): void
+    {
+        if (!file_exists($filePath)) {
+            throw new \Exception('配置文件' . $filePath . '不存在');
+        }
+
+        self::$loaded = true;
+
+        //返回二位数组
+        $env = parse_ini_file($filePath, true);
+
+        foreach ($env as $key => $val) {
+            $prefix = static::ENV_PREFIX . strtoupper($key);
+            if (is_array($val)) {
+                foreach ($val as $k => $v) {
+                    $item = $prefix . '_' . strtoupper($k);
+                    putenv("$item=$v");
+                }
+            } else {
+                putenv("$prefix=$val");
+            }
+        }
+    }
+
+    /**
      * 获取环境变量值
      *
      * @access public
@@ -41,16 +74,20 @@ class Helper
      */
     public static function getEnv(string $name, string $default = null)
     {
-        $prefix = defined('ENV_PREFIX') ? ENV_PREFIX : '';
-        $result = getenv($prefix . strtoupper(str_replace('.', '_', $name)));
+
+        if (!self::$loaded) {
+            try {
+                self::loadFile(dirname(dirname(__DIR__)) . '/.env');
+            } catch (\Exception $e) {
+                return $default;
+            }
+        }
+
+        $result = getenv(static::ENV_PREFIX . strtoupper(str_replace('.', '_', $name)));
 
         if (false !== $result) {
-            if ('false' === $result) {
-                $result = false;
-            } elseif ('true' === $result) {
-                $result = true;
-            }
-
+            'true' === $result && $result = true;
+            'false' === $result && $result = false;
             return $result;
         }
 
