@@ -30,6 +30,7 @@ class PhantomjsClient {
     /**
      * 错误信息
      * error_code_1 : route is empty 「路由不存在」
+     * error_code_2 : phantomjs exec error 「phantomjs执行失败」
      */
     public const ERROR_MESSAGE = [
         1 => 'route is empty', // 路由不存在
@@ -49,6 +50,7 @@ class PhantomjsClient {
     protected $size = 2;   //网页放大倍数(默认2,建议2,网页放大2倍已经足够清晰，倍数越大，图片越大)
     protected $time = 2; //渲染时间，默认200毫秒
     protected $extParam;   //扩展参数
+    protected $unsetPicture = false; //是否删除图片 false-不删除 true-删除 默认:false
 
     /**
      * 程序执行配置
@@ -82,6 +84,7 @@ class PhantomjsClient {
         $this->height = $this->params['height'] ?? $this->height;
         $this->extParam = $this->params['ext_param'] ?? $this->extParam;
         $this->screenshotUrl = $this->params['screenshot_url'] ?? $this->screenshotUrl;
+        $this->unsetPicture = $this->params['unset_picture'] ?? $this->unsetPicture;
     }
 
     /**
@@ -121,6 +124,14 @@ class PhantomjsClient {
 
     /**
      * 生成截图
+     * @param array extParam  扩展配置信息
+     * @param string screenshotUrl 截图地址
+     * @param int width 图片宽度
+     * @param int height 图片高度
+     * @param int size 网页放大倍数
+     * @param int time 渲染时间
+     * @param bool unsetPicture 是否删除生成图片
+     *
      * @return array|string
      */
     protected function setScreenshot()
@@ -137,6 +148,8 @@ class PhantomjsClient {
         }
 
         // 返回图片base64信息
-        return Helper::imgToBase64($filePath);
+        $imgBase64 = Helper::imgToBase64($filePath);
+        $this->unsetPicture && @unlink($filePath);
+        return $imgBase64;
     }
 }
