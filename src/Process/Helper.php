@@ -93,4 +93,24 @@ class Helper
 
         return $default;
     }
+
+    /**
+     * 图片转base64
+     * @param string $filePath  文件地址
+     * @param string $type      图片类型 jpg|png|gif
+     * @return string
+     */
+    public static function imgToBase64(string $filePath, string $type = 'jpg'): string
+    {
+        if (empty($filePath)) {
+            return '';
+        }
+
+        $base64 = '';
+        if (file_exists($filePath)) {
+            //合成图片的base64编码
+            $base64 = sprintf('data:image/%s;base64,%s', $type, chunk_split(base64_encode(file_get_contents($filePath))));
+        }
+        return $base64;
+    }
 }

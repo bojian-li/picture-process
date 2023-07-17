@@ -2,6 +2,7 @@
 
 use Bojian\PictureProcess\Process\OssPath;
 use Bojian\PictureProcess\Process\AliyunClient;
+use Bojian\PictureProcess\Process\PhantomjsClient;
 
 /**
  * 是否以开头
@@ -25,6 +26,18 @@ function aliyunPictureClient(string $route, array $params = [])
 {
      $client = new AliyunClient($route, $params);
      return $client->getResult();
+}
+
+/**
+ * Phantomjs图片客户端
+ * @param string $route
+ * @param array $params
+ * @return array|null|string
+ */
+function phantomjsPictureClient(string $route, array $params = [])
+{
+    $client = new PhantomjsClient($route, $params);
+    return $client->getResult();
 }
 
 /**
