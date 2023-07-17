@@ -13,6 +13,7 @@ namespace Bojian\PictureProcess\Process;
 class PhantomjsClient {
 
     /**
+     * phantomjs官网地址：https://phantomjs.org/
      * 定义客户端逻辑
      * @var array
      */
