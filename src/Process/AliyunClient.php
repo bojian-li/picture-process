@@ -44,10 +44,10 @@ class AliyunClient
      * 配置图片属性
      */
     protected $screenshotUrl; //截图地址
-    protected $width = 375; //图片宽度 默认:375
+    protected $width = 375;   //图片宽度 默认:375
     protected $height = 10000; //图片高度 默认:10000
     protected $extParam;  //扩展参数
-    protected $alifcUrl = 'http://alifc.uhomes.com/screenshot'; //阿里云截图地址
+    protected $alifcUrl; //阿里云截图地址
 
     /**
      * AliyunClient constructor.
