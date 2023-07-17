@@ -2,3 +2,5 @@
 /runtime/
 .phpunit.result.cache
 .env
+.idea/
+```
